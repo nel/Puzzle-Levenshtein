@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require File.join(File.dirname(__FILE__), 'lib/levenshtein_one_ascii.rb')
+
+require 'pp'
+
+if ARGV.size != 2
+  puts "Try ./count_sibblings <Words file path> word (e.g. ./count_sibblings words.csv causes)" 
+  exit 1
+end
+
+puts "Please wait this gonna take about 1 min"
+d = DataStore.new.loadfile ARGV[0] 
+
+res = nil
+
+require 'benchmark'
+result_time = Benchmark.realtime {
+  res = LevenshteinOneAscii.new(d).count_social_network(ARGV[1])
+}
+
+puts "There are #{res} words in the social network of #{ARGV[1]}:"
+puts "Results have been calculated in #{result_time}"
