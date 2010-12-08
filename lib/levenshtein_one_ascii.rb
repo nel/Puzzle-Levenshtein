@@ -67,17 +67,6 @@ private
     res
   end
 
-  # Generate all variations of a word by adding a char
-  def sibblings_by_addition(word)
-    res = []
-    (word.length+1).times do |l|
-      CHARSET.each do |c|
-        res << word.dup.insert(l, c)
-      end
-    end
-    res
-  end
-
   # Generate all yet UNKNOWN variations of a word by substitution
   def sibblings_by_substitution(word)
     variations = []
