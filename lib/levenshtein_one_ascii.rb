@@ -5,19 +5,19 @@ class LevenshteinOneAscii
     @datastore = datastore
     @known_sibblings = {}
   end
-  
+
   def social_network(word)
     sibblings_word!(word)
     @known_sibblings.keys.sort
   end
-  
+
   def count_social_network(word)
     sibblings_word!(word)
     @known_sibblings.length
   end
 
 private
-  
+
   def sibblings_word!(word)
     reset_known_sibblings!
     new_sibblings = direct_sibblings(word)
@@ -26,7 +26,7 @@ private
       new_sibblings = new_sibblings.map! {|sibbling| direct_sibblings(sibbling) }.flatten!
     end
   end
-  
+
   # Return the new direct sibblings of word by studying its different variation
   def direct_sibblings(word)
     sibblings_by_suppression(word) + sibblings_by_substitution(word) + sibblings_by_addition(word)
@@ -39,7 +39,7 @@ private
   # Generate all variations of a word by removing a char
   def sibblings_by_suppression(word)
     variations = []
-    word.length.times do |l| 
+    word.length.times do |l|
       w = ''
       i = 0
       word.each_char do |c|
@@ -49,22 +49,6 @@ private
       variations << w if is_new_sibblings?(w)
     end
     variations
-  end  
-
-  # Generate all variations of a word by substituting a char
-  def sibblings_by_substitution(word)
-    res = []
-    l = 0
-    word.each_char do |current_char|
-      CHARSET.each do |c|
-        next if c == current_char
-        w = word.dup
-        w[l] = c
-        res << w
-      end
-      l+=1
-    end
-    res
   end
 
   # Generate all yet UNKNOWN variations of a word by substitution
@@ -77,7 +61,7 @@ private
     end
     variations
   end
-  
+
   # Generate all yet UNKNOWN variations of a word by adding
   def sibblings_by_addition(word)
     variations = []
@@ -86,7 +70,7 @@ private
     end
     variations
   end
-  
+
   # Generate all UNKNOWN variations of a word by modifying the character at a certain position
   def sibblings_by_wildcard(word, char_position)
     variations = []
@@ -96,14 +80,14 @@ private
     end
     variations
   end
-  
+
   def reset_known_sibblings!
     @known_sibblings = {} #maintain list valid sibblings in a hash for quick check
   end
 end
 
 class DataStore < Hash
-  
+
   def loadfile(filename)
     File.open(filename) do |f|
       f.each_line do |l|
